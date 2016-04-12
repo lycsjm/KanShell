@@ -137,16 +137,6 @@ class KanShell(cmd.Cmd):
     def do_d(self, args):
         return self.do_docking(args)
 
-    def do_click(self, args):
-        '''點擊(預設為母港按鈕)'''
-        try:
-            self.click(*parseInt(args)[:2])
-        except ValueError:
-            self.click()
-
-    def do_c(self, args):
-        self.do_click(args)
-
     def do_clickOrganize(self, args):
         '''點擊側邊欄的「編成」'''
         self.click(*SIDE.ORGANIZE, sleeptime=1.1)
@@ -201,19 +191,6 @@ class KanShell(cmd.Cmd):
 
     def do_r(self, args):
         self.do_retreat(args)
-
-    def do_move(self, args):
-        '''移動滑鼠'''
-        try:
-            x, y = parseInt(args)[:2]
-        except ValueError:
-            return
-
-        pyautogui.moveTo(*INITPOS)
-        pyautogui.moveRel(x, y)
-
-    def do_m(self, args):
-        self.do_move(args)
 
     def do_form(self, args):
         '''陣形選擇
@@ -287,6 +264,27 @@ class KanShell(cmd.Cmd):
     def do_qs(self, args):
         return self.do_questSelect(args)
 
+    def do_moveTo(self, args):
+        '''移動滑鼠'''
+        try:
+            self.move(parseInt(args)[:2])
+        except ValueError:
+            self.move()
+
+    def do_t(self, args):
+        return self.do_moveTo(args)
+
+    def do_click(self, args):
+        '''點擊(預設為母港按鈕)'''
+        try:
+            self.click(parseInt(args)[:2])
+        except ValueError:
+            self.click()
+
+    def do_c(self, args):
+        return self.do_click(args)
+
+
     def do_exit(self, args):
         return True
 
@@ -296,14 +294,21 @@ class KanShell(cmd.Cmd):
     def do_EOF(self, args):
         return True
 
-    def click(self, x=MAIN.PORT, y=0, sleeptime=0):
+    def move(self, x=MAIN.PORT, y=None):
         if isinstance(x, tuple):
             x, y = x
-        pyautogui.moveTo(*INITPOS)
-        pyautogui.moveRel(x, y)
+        pyautogui.moveTo(getPos(x, y))
+
+    def click(self, x=MAIN.PORT, y=None, sleeptime=0):
+        self.move(x, y)
         pyautogui.click()
         if sleeptime:
             time.sleep(sleeptime)
+
+def getPos(point, y=None):
+    if y is not None:
+        point = (point, y)
+    return tuple(sum(i) for i in zip(INITPOS, point))
 
 
 def parseInt(args):
