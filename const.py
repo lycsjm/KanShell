@@ -35,11 +35,11 @@ mainButtonPos = MainScreen(
     )
 
 SideBarButtonPos = SideBar(
-    ORGANIZE = (25, 175),
-    SUPPLY = (25, 225),
-    REFIT = (25, 275),
-    DOCKING = (25, 325),
-    FACTORY = (25, 375),
+    ORGANIZE = (25, 150),
+    SUPPLY = (25, 205),
+    REFIT = (25, 260),
+    DOCKING = (25, 315),
+    FACTORY = (25, 370),
     SORTLE = (0, 0),
     PORT = (75, 425),
     )
