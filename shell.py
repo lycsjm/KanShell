@@ -42,7 +42,7 @@ class KanShell(cmd.Cmd):
         self.click(*MAIN.SORTLE, sleeptime=.2)
         self.click(*SORTLE.SORTLE, sleeptime=1)
         self.click(*ADV.AREA[areaNum - 1])
-        if mapNum > 3:
+        if mapNum > 4:
             self.click(*ADV.EO)
         self.click(*ADV.MAP[mapNum - 1], sleeptime=.2)
         self.click(*ADV.SELECT, sleeptime=.2)
@@ -51,6 +51,10 @@ class KanShell(cmd.Cmd):
     def do_ma1(self, args):
         '''1-1 刷閃'''
         self.mapSelect(1, 1)
+
+    def do_ma2(self, args):
+        ''' 4-2 東方'''
+        self.mapSelect(4, 2)
 
     def do_ma3(self, args):
         ''' 2-3 撈油'''
