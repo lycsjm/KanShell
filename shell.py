@@ -2,6 +2,7 @@
 import cmd
 import pyautogui
 import time
+import random
 from const import INITPOS
 from const import mainButtonPos as MAIN
 from const import supplyButtonPos as SUPPLY
@@ -304,12 +305,14 @@ class KanShell(cmd.Cmd):
         self.move(x, y)
         pyautogui.click()
         if sleeptime:
+            sleeptime += random.random() / 10
             time.sleep(sleeptime)
 
 def getPos(point, y=None):
     if y is not None:
         point = (point, y)
-    return tuple(sum(i) for i in zip(INITPOS, point))
+        randVar = (random.randrange(5), random.randrange(5))
+    return tuple(sum(i) for i in zip(INITPOS, point, randVar))
 
 
 def parseInt(args):
