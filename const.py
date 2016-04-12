@@ -20,6 +20,7 @@ AdvanceScreen = namedtuple('AdvanceScreen', ['AREA', 'MAP', 'EO', 'SELECT',
                                              'START'])
 
 QuestScreen = namedtuple('QuestScreen', ['PAGE', 'OFFSET', 'CLOSE'])
+WaitTime = namedtuple('WaitTime', ['SHORT', 'MIDDLE', 'LONG'])
 
 INITPOS = (800, 30)  # 起始點
     
@@ -109,4 +110,10 @@ questButtonPos = QuestScreen(
     PAGE = ( (350, 465), (405, 465), (460, 465), (515, 465), (570, 465),),
     OFFSET = ( (450, 140), (450, 210), (450, 280), (450, 350), (450, 420),),
     CLOSE = (400, 400),
+    )
+
+waitTime = WaitTime(
+    SHORT=.4,
+    MIDDLE=.6,
+    LONG=1.2
     )

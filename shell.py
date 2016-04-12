@@ -14,6 +14,7 @@ from const import advanceButtonPos as ADV
 from const import topBarButtonPos as TOP
 from const import questButtonPos as QUEST
 from const import dockingButtonPos as DOCK
+from const import waitTime as WAIT
 
 class KanShell(cmd.Cmd):
     prevPos = pyautogui.position()
@@ -39,14 +40,14 @@ class KanShell(cmd.Cmd):
         self.mapSelect(areaNum, mapNum)
 
     def mapSelect(self, areaNum, mapNum):
-        self.click(*MAIN.SORTLE, sleeptime=.2)
-        self.click(*SORTLE.SORTLE, sleeptime=1)
+        self.click(*MAIN.SORTLE, sleeptime=WAIT.MIDDLE)
+        self.click(*SORTLE.SORTLE, sleeptime=WAIT.LONG)
         self.click(*ADV.AREA[areaNum - 1])
         if mapNum > 4:
             self.click(*ADV.EO)
-        self.click(*ADV.MAP[mapNum - 1], sleeptime=.2)
-        self.click(*ADV.SELECT, sleeptime=.2)
-        self.click(*ADV.START, sleeptime=.2)
+        self.click(*ADV.MAP[mapNum - 1], sleeptime=WAIT.SHORT)
+        self.click(*ADV.SELECT, sleeptime=WAIT.SHORT)
+        self.click(*ADV.START, sleeptime=WAIT.SHORT)
 
     def do_ma1(self, args):
         '''1-1 刷閃'''
@@ -74,7 +75,7 @@ class KanShell(cmd.Cmd):
             fleetNum = parseInt(args)[0]
         except IndexError:
             fleetNum = 1
-        self.click(*MAIN.ORGANIZE, sleeptime=1)
+        self.click(*MAIN.ORGANIZE, sleeptime=WAIT.LONG)
         self.click(*ORG.FLEETS[fleetNum - 1])
 
     def do_v(self, args):
@@ -95,11 +96,11 @@ class KanShell(cmd.Cmd):
         if not fleets:
             fleets = (1,)
 
-        self.click(*MAIN.SUPPLY, sleeptime=.2)
+        self.click(*MAIN.SUPPLY, sleeptime=WAIT.SHORT)
         for fleetNum in fleets:
             fleetNum -= 1
             self.click(*SUPPLY.FLEETS[fleetNum])
-            self.click(*SUPPLY.SUPPLYALL, sleeptime=.5)
+            self.click(*SUPPLY.SUPPLYALL, sleeptime=WAIT.SHORT)
         self.click()
 
     def do_s(self, args):
@@ -111,7 +112,7 @@ class KanShell(cmd.Cmd):
             fleetNum = parseInt(args)[0] - 1
         except:
             fleetNum = 0
-        self.click(*MAIN.SUPPLY, sleeptime=.2)
+        self.click(*MAIN.SUPPLY, sleeptime=WAIT.SHORT)
         self.click(*SUPPLY.FLEETS[fleetNum])
         self.click(*SUPPLY.SELECT[0])
         self.click(*SUPPLY.SELECT[1])
@@ -120,14 +121,14 @@ class KanShell(cmd.Cmd):
 
     def do_refit(self, args):
         '''改修'''
-        self.click(*MAIN.REFIT, sleeptime=1)
+        self.click(*MAIN.REFIT, sleeptime=WAIT.LONG)
 
     def do_r(self, args):
         return self.do_refit(args)
     
     def do_docking(self, args):
         '''入渠'''
-        self.click(*MAIN.DOCKING, sleeptime=1)
+        self.click(*MAIN.DOCKING, sleeptime=WAIT.LONG)
         try:
             dockNum = parseInt(args)[0] - 1
         except IndexError:
@@ -139,28 +140,28 @@ class KanShell(cmd.Cmd):
 
     def do_clickOrganize(self, args):
         '''點擊側邊欄的「編成」'''
-        self.click(*SIDE.ORGANIZE, sleeptime=1.1)
+        self.click(*SIDE.ORGANIZE, sleeptime=WAIT.LONG)
     
     def do_co(self, args):
         return self.do_clickOrganize(args)
 
     def do_clickSupply(self, args):
         '''點擊側邊欄的「補給」'''
-        self.click(*SIDE.SUPPLY, sleeptime=1.1)
+        self.click(*SIDE.SUPPLY, sleeptime=WAIT.LONG)
 
     def do_cs(self, args):
         return self.do_clickSupply(args)
 
     def do_clickRefit(self, args):
         '''點擊側邊欄的「改修」'''
-        self.click(*SIDE.REFIT, sleeptime=1)
+        self.click(*SIDE.REFIT, sleeptime=WAIT.LONG)
 
     def do_cr(self, args):
         return self.do_clickRefit(args)
 
     def do_clickDocking(self, args):
         '''點擊側邊欄的「入渠」'''
-        self.click(*SIDE.DOCKING, sleeptime=1)
+        self.click(*SIDE.DOCKING, sleeptime=WAIT.LONG)
 
         try:
             dockNum = parseInt(args)[0] - 1
@@ -173,7 +174,7 @@ class KanShell(cmd.Cmd):
 
     def do_clickFactory(self, args):
         '''點擊側邊欄的「工廠」'''
-        self.click(*SIDE.FACTORY, sleeptime=1.1)
+        self.click(*SIDE.FACTORY, sleeptime=WAIT.LONG)
 
     def do_cf(self, args):
         return self.do_clickFactory(args)
@@ -225,11 +226,11 @@ class KanShell(cmd.Cmd):
             expId, fleetNum = parseInt(args)[0], 2
 
         areaNum, expPos = divmod(expId - 1, 8)
-        self.click(*MAIN.SORTLE, sleeptime=.2)  # 出擊
-        self.click(*SORTLE.EXPEDITION, sleeptime=1.1)
+        self.click(*MAIN.SORTLE, sleeptime=WAIT.SHORT)  # 出擊
+        self.click(*SORTLE.EXPEDITION, sleeptime=WAIT.LONG)
         self.click(*EXP.AREA[areaNum])
-        self.click(*EXP.EXPPOS[expPos], sleeptime=.1)
-        self.click(*EXP.SELECT, sleeptime=.2)
+        self.click(*EXP.EXPPOS[expPos], sleeptime=WAIT.SHORT)
+        self.click(*EXP.SELECT, sleeptime=WAIT.SHORT)
         self.click(*EXP.FLEETS[fleetNum - 1])
         self.click(*EXP.START, sleeptime=4)
         self.click()
@@ -243,7 +244,7 @@ class KanShell(cmd.Cmd):
         try:
             pageNum = parseInt(args)[0] - 1
         except IndexError:
-            self.click(*TOP.QUEST, sleeptime=1)
+            self.click(*TOP.QUEST, sleeptime=WAIT.LONG)
             self.click()
             return
         self.click(*QUEST.PAGE[pageNum])
@@ -259,7 +260,7 @@ class KanShell(cmd.Cmd):
             return
         for questNum in quests:
             questNum -= 1
-            self.click(*QUEST.OFFSET[questNum], sleeptime=.5)
+            self.click(*QUEST.OFFSET[questNum], sleeptime=WAIT.MIDDLE)
 
     def do_qs(self, args):
         return self.do_questSelect(args)
