@@ -43,7 +43,8 @@ class KanShell(cmd.Cmd):
     def mapSelect(self, areaNum, mapNum):
         self.click(*MAIN.SORTLE, sleeptime=WAIT.MIDDLE)
         self.click(*SORTLE.SORTLE, sleeptime=WAIT.LONG)
-        self.click(*ADV.AREA[areaNum - 1])
+        if areaNum > 1:
+            self.click(*ADV.AREA[areaNum - 1])
         if mapNum > 4:
             self.click(*ADV.EO)
         self.click(*ADV.MAP[mapNum - 1], sleeptime=WAIT.SHORT)
@@ -72,11 +73,11 @@ class KanShell(cmd.Cmd):
 
     def do_view(self, args):
         '''切到編成視窗'''
+        self.click(*MAIN.ORGANIZE, sleeptime=WAIT.LONG)
         try:
             fleetNum = parseInt(args)[0]
         except IndexError:
-            fleetNum = 1
-        self.click(*MAIN.ORGANIZE, sleeptime=WAIT.LONG)
+            return
         self.click(*ORG.FLEETS[fleetNum - 1])
 
     def do_v(self, args):
@@ -95,12 +96,13 @@ class KanShell(cmd.Cmd):
         '''補給'''
         fleets = parseInt(args)
         if not fleets:
-            fleets = (1,)
+            fleets = (None,)
 
         self.click(*MAIN.SUPPLY, sleeptime=WAIT.SHORT)
         for fleetNum in fleets:
-            fleetNum -= 1
-            self.click(*SUPPLY.FLEETS[fleetNum])
+            if fleetNum is not None:
+                fleetNum -= 1
+                self.click(*SUPPLY.FLEETS[fleetNum])
             self.click(*SUPPLY.SUPPLYALL, sleeptime=WAIT.SHORT)
         self.click()
 
@@ -224,15 +226,17 @@ class KanShell(cmd.Cmd):
         try:
             expId, fleetNum = parseInt(args)
         except ValueError:
-            expId, fleetNum = parseInt(args)[0], 2
+            expId, fleetNum = parseInt(args)[0], None
 
         areaNum, expPos = divmod(expId - 1, 8)
         self.click(*MAIN.SORTLE, sleeptime=WAIT.SHORT)  # 出擊
         self.click(*SORTLE.EXPEDITION, sleeptime=WAIT.LONG)
-        self.click(*EXP.AREA[areaNum])
+        if areaNum > 0:
+            self.click(*EXP.AREA[areaNum])
         self.click(*EXP.EXPPOS[expPos], sleeptime=WAIT.SHORT)
         self.click(*EXP.SELECT, sleeptime=WAIT.SHORT)
-        self.click(*EXP.FLEETS[fleetNum - 1])
+        if fleetNum is not None:
+            self.click(*EXP.FLEETS[fleetNum - 1])
         self.click(*EXP.START, sleeptime=4)
         self.click()
 
